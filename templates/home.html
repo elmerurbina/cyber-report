@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="terminal">
+    <h2>Welcome to Cyber Report</h2>
+    <p>🔍 Search and report scams, phishing attempts, and fraudulent activities.</p>
+    <form method="GET" action="{% url 'report_list' %}">
+        <input type="text" name="search" placeholder="Search by email, phone, or URL..." required>
+        <button type="submit">Search</button>
+    </form>
+</section>
+{% endblock %}

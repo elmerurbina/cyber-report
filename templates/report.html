@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="terminal">
+    <h2>📜 Scam Reports</h2>
+
+    <form method="GET">
+        <input type="text" name="search" value="{{ search_query }}" placeholder="Search reports..." required>
+        <button type="submit">Search</button>
+    </form>
+
+    {% if reports %}
+        <ul>
+            {% for report in reports %}
+                <li>
+                    <strong>{{ report.report_type }}</strong> - {{ report.value }}<br>
+                    <small>{{ report.description }}</small>
+                    <form method="POST" action="{% url 'delete_report' report.id %}" class="delete-form">
+                        {% csrf_token %}
+                        <button type="submit">❌ Delete</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No reports found.</p>
+    {% endif %}
+</section>
+{% endblock %}
