@@ -2,28 +2,28 @@
 
 {% block content %}
 <section class="terminal">
-    <h2>📜 Scam Reports</h2>
+    <h2>📌 Report a Scam</h2>
+    <p>Fill in the details to report a scam or fraudulent activity.</p>
 
-    <form method="GET">
-        <input type="text" name="search" value="{{ search_query }}" placeholder="Search reports..." required>
-        <button type="submit">Search</button>
+    <form method="POST" action="{% url 'create_report' %}">
+        {% csrf_token %}
+        <label for="report_type">Type:</label>
+        <select name="report_type" required>
+            <option value="phone">📞 Phone</option>
+            <option value="email">📧 Email</option>
+            <option value="url">🌍 URL</option>
+            <option value="site">🏢 Website</option>
+        </select>
+
+        <label for="value">Value:</label>
+        <input type="text" name="value" placeholder="Enter phone number, email, or URL" required>
+
+        <label for="description">Description:</label>
+        <textarea name="description" placeholder="Describe the issue..." required></textarea>
+
+        <button type="submit">📌 Submit Report</button>
     </form>
 
-    {% if reports %}
-        <ul>
-            {% for report in reports %}
-                <li>
-                    <strong>{{ report.report_type }}</strong> - {{ report.value }}<br>
-                    <small>{{ report.description }}</small>
-                    <form method="POST" action="{% url 'delete_report' report.id %}" class="delete-form">
-                        {% csrf_token %}
-                        <button type="submit">❌ Delete</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No reports found.</p>
-    {% endif %}
+
 </section>
 {% endblock %}

@@ -1,12 +1,39 @@
 {% extends 'base.html' %}
+{% load static %}  {# Ensure static files are loaded #}
 
 {% block content %}
 <section class="terminal">
-    <h2>Welcome to Cyber Report</h2>
-    <p>🔍 Search and report scams, phishing attempts, and fraudulent activities.</p>
+    <h2>📜 Malicious Entities Reports</h2>
+    <p>🔍 Search and report scams, phishing attempts, URLs, sites, and other fraudulent activities.</p>
+
+    <!-- Search Form -->
     <form method="GET" action="{% url 'report_list' %}">
-        <input type="text" name="search" placeholder="Search by email, phone, or URL..." required>
-        <button type="submit">Search</button>
+        <input type="text" name="search" placeholder="🔍 Search by email, phone, or URL..." value="{{ search_query }}">
+        <button type="submit">🔍 Search</button>
     </form>
+
+
+    <!-- Report Form (Initially Hidden) -->
+    <div id="report-form-container" style="display: none;">
+        {% include 'report.html' %}
+    </div>
+
+    <!-- Display Reports -->
+    {% if reports %}
+        <h3>🆕 Recent Reports</h3>
+        <ul>
+            {% for report in reports %}
+                <li>
+                    <strong>⚠️ {{ report.report_type|title }}</strong> - {{ report.value }}<br>
+                    <small>📝 {{ report.description }}</small><br>
+                    <small>📅 Reported on: {{ report.reported_at }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>❌ No reports found.</p>
+    {% endif %}
 </section>
+
+<script src="{% static 'js/toggle_form.js' %}"></script>  {# Ensure JS is loaded correctly #}
 {% endblock %}
